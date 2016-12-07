@@ -51,10 +51,3 @@ class KNNTests(TestCase):
     def test_normalize(self):
         ts = DataSet([DataEntry([7, 3, 8], 'a'), DataEntry([1, 2, 3], 'b')])
         normalize(ts, vertical=True)
-
-
-git init
-git add -A
-git commit -m "Initialize repository”
-git remote add origin git@bitbucket.org:<username>/<repository>.git
-git push -u origin —all
