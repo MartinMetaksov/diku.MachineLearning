@@ -2,8 +2,13 @@
   <dictionary name="martinmetaksov">
     <words>
       <w>dataset</w>
+      <w>deliverables</w>
+      <w>eigenspectrum</w>
       <w>eigenvector</w>
       <w>eigenvectors</w>
+      <w>hyperparameter</w>
+      <w>kmeans</w>
+      <w>pinv</w>
       <w>vals</w>
     </words>
   </dictionary>
