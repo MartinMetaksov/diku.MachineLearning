@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.svm import SVC
 
 SPECTROSCOPIC_REDSHIFTS_TRAIN_FILE = "data/ML2016SpectroscopicRedshiftsTrain.dt"
@@ -130,25 +131,27 @@ class Weeds(TestCase):
     # found by grid search; classification accuracy on training and test data
     def test_binary_classification_with_svm(self):
         print("Question 2.2 Binary classification using SVMs")
-        # model = SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-        #             decision_function_shape=None, degree=3, gamma='auto', kernel='rbf',
-        #             max_iter=-1, probability=False, random_state=None, shrinking=True,
-        #             tol=0.001, verbose=False)
-        model = SVC()
+        model = SVC(kernel=rbf_kernel)
         model.fit(self.x_train, self.y_train)
         predictions_test = model.predict(self.x_test)
         zol_test = zero_one_loss(self.y_test, predictions_test)
-        print("The zero one loss after logistic regression on the test data is: %.5f" % zol_test)
-        # todo: fix SVM
-        # predictions_train = model.predict(self.x_train)
-        # zol_train = zero_one_loss(self.y_train, predictions_train)
-        # print("The zero one loss after logistic regression on the train data is: %.5f" % zol_train)
+        print("The zero one loss after SVM with rbf kernel on the test data is: %.5f" % zol_test)
+        predictions_train = model.predict(self.x_train)
+        zol_train = zero_one_loss(self.y_train, predictions_train)
+        print("The zero one loss after SVM with rbf kernel on the train data is: %.5f" % zol_train)
 
     # Question 2.3 (normalization)
     def test_normalization(self):
         print("Question 2.3 Normalization")
-        x = normalize(self.weeds_train)
-        # todo: test SVM with normalized data
+        x = normalize(self.x_train)
+        model = SVC(kernel=rbf_kernel)
+        model.fit(x, self.y_train)
+        predictions_test = model.predict(normalize(self.x_test))
+        zol_test = zero_one_loss(self.y_test, predictions_test)
+        print("The zero one loss after SVM with rbf kernel on the test data is: %.5f" % zol_test)
+        predictions_train = model.predict(normalize(self.x_train))
+        zol_train = zero_one_loss(self.y_train, predictions_train)
+        print("The zero one loss after SVM with rbf kernel on the train data is: %.5f" % zol_train)
 
     # Question 2.4 (Principal component analysis)
     def test_pca(self):
