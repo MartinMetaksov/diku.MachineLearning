@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.svm import SVC
@@ -152,6 +153,19 @@ class Weeds(TestCase):
         predictions_train = model.predict(normalize(self.x_train))
         zol_train = zero_one_loss(self.y_train, predictions_train)
         print("The zero one loss after SVM with rbf kernel on the train data is: %.5f" % zol_train)
+
+    # Question 2.3 additional
+    def test_random_forest(self):
+        print("Question 2.3 Random forest")
+        model = RandomForestClassifier()
+        x = normalize(self.x_train)
+        model.fit(x, self.y_train)
+        predictions_test = model.predict(normalize(self.x_test))
+        zol_test = zero_one_loss(self.y_test, predictions_test)
+        print("The zero one loss after using RandomForestClassifier on the test data is: %.5f" % zol_test)
+        predictions_train = model.predict(normalize(self.x_train))
+        zol_train = zero_one_loss(self.y_train, predictions_train)
+        print("The zero one loss after using RandomForestClassifier on the train data is: %.5f" % zol_train)
 
     # Question 2.4 (Principal component analysis)
     def test_pca(self):
