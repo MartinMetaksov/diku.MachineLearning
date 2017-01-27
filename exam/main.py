@@ -1,5 +1,6 @@
 from unittest import TestCase
-from exam.core.commons import variance, mean_squared_error, zero_one_loss, simple_square_transform, normalize
+from exam.core.commons import variance, mean_squared_error, zero_one_loss, simple_square_transform, normalize, \
+    grid_search
 from exam.core.regression import LinearRegression, NonlinearRegression
 from exam.utility.file_utility import load_data
 import numpy as np
@@ -9,6 +10,7 @@ from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics.pairwise import rbf_kernel
+from sklearn.model_selection import KFold
 from sklearn.svm import SVC
 
 SPECTROSCOPIC_REDSHIFTS_TRAIN_FILE = "data/ML2016SpectroscopicRedshiftsTrain.dt"
@@ -132,6 +134,10 @@ class Weeds(TestCase):
     # found by grid search; classification accuracy on training and test data
     def test_binary_classification_with_svm(self):
         print("Question 2.2 Binary classification using SVMs")
+        # todo: jaakkola's heuristic missing
+        # c_range = np.logspace(2, 2.7183, 10)
+        # gamma_range = np.logspace(-3, 3)
+        # C, gamma = grid_search(c_range, gamma_range, self.x_train, self.y_train)
         model = SVC(kernel=rbf_kernel)
         model.fit(self.x_train, self.y_train)
         predictions_test = model.predict(self.x_test)

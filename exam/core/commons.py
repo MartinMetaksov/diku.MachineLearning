@@ -1,6 +1,8 @@
 from math import sqrt, log
 import numpy as np
 import itertools
+from sklearn.model_selection import KFold, GridSearchCV
+from sklearn.svm import SVC
 
 
 def mean(l):
@@ -55,3 +57,13 @@ def normalize(data, unit_variance=True):
         return np.array(list(map(lambda row: (row - mean(row)) / np.sqrt(variance(row)), data.T))).T
     else:
         return np.array(list(map(lambda row: (row - mean(row)), data.T))).T
+
+
+def grid_search(c_range, gamma_range, x, y):
+    param_grid = dict(gamma=gamma_range, C=c_range)
+    cv = KFold(n_splits=5)
+    grid = GridSearchCV(SVC(), param_grid=param_grid, cv=cv)
+    grid.fit(x, y)
+    print("The best parameters are %s with a score of %0.2f"
+          % (grid.best_params_, grid.best_score_))
+    return None, None
